@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 
 const App = () => {
     const [sentence, setSentence] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const callAPI = async () => {
@@ -12,13 +13,15 @@ const App = () => {
                 setSentence(content);
             } catch (err) {
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         }
         callAPI()
     }, [])
     return (
         <div>
-            { sentence }
+            { loading ? "Loading..." : sentence }
         </div>
     );
 };
