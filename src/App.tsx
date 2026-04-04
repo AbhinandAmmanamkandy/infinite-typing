@@ -1,36 +1,27 @@
+import {useSentence} from "./hooks/useSentence.ts";
+import {checkTyping} from "./utils/checkTyping.ts";
 import {type ChangeEvent, useEffect, useState} from "react";
 
 const App = () => {
     const [typed, setTyped] = useState("");
-    const [sentence, setSentence] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const callAPI = async (): Promise<void> => {
-        try {
-            const res = await fetch("https://api.quotable.io/random");
-            const data = await res.json();
-            const content = data.content;
-            setSentence(content);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    }
+    const {sentence, loading, fetchSentence} = useSentence();
 
     useEffect(() => {
-        callAPI()
-    }, [])
-    const checkTyped = (e: ChangeEvent<HTMLInputElement>) => {
-        if (sentence === e.currentTarget.value) {
-            callAPI();
+        fetchSentence();
+    }, []);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        if (checkTyping(value, sentence)) {
+            setTyped(value);
+        }
+
+        if (value === sentence) {
             setTyped("");
-            return;
+            fetchSentence();
         }
-        if (sentence[e.currentTarget.value.length - 1] === e.currentTarget.value[e.currentTarget.value.length - 1]) {
-            setTyped(e.target.value)
-        }
-    }
+    };
     return (
         <div>
             {loading ? "Loading..." : sentence}
@@ -38,7 +29,7 @@ const App = () => {
             <input
                 type="text"
                 value={typed}
-                onChange={checkTyped}/>
+                onChange={handleChange}/>
         </div>
     );
 };
