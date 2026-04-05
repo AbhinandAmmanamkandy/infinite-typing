@@ -1,13 +1,15 @@
 import {useSentence} from "./hooks/useSentence.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const App = () => {
     const [typed, setTyped] = useState<string>();
+    const divRef = useRef<HTMLDivElement>(null);
     const {sentence, loading, fetchSentence} = useSentence();
 
     useEffect(() => {
         fetchSentence().then(() => {
         });
+        divRef.current?.focus();
     }, []);
 
     const handleKeyDown = (e) => {
@@ -18,7 +20,7 @@ const App = () => {
     }
 
     return (
-        <div className="flex items-center justify-center h-screen flex-col" tabIndex={0} onKeyDown={handleKeyDown}>
+        <div ref={divRef} className="flex items-center justify-center h-screen flex-col" tabIndex={0} onKeyDown={handleKeyDown}>
             {loading ? "Loading..." : sentence}
         </div>
     );
