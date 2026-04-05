@@ -8,7 +8,7 @@ const App = () => {
     useEffect(() => {
         fetchSentence().then(() => {
         });
-    }, [fetchSentence]);
+    }, []);
 
     const handleKeyDown = (e) => {
         const value: string = typed + e.key;
