@@ -1,5 +1,6 @@
-import {useSentence} from "./hooks/useSentence.ts";
+import * as React from "react";
 import {useEffect, useRef, useState} from "react";
+import {useSentence} from "./hooks/useSentence.ts";
 
 const App = () => {
     const [typed, setTyped] = useState<string>("");
@@ -12,7 +13,7 @@ const App = () => {
         divRef.current?.focus();
     }, []);
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
         const value: string = typed + e.key;
         if (sentence.startsWith(value)) {
             setTyped(value);
@@ -24,9 +25,9 @@ const App = () => {
     }
 
     return (
-        <div ref={divRef} className="flex items-center justify-center h-screen flex-col" tabIndex={0} onKeyDown={handleKeyDown}>
-            {loading ? "Loading..." : (
-                <p className="text-xl">
+        <div ref={divRef} className="flex text-4xl items-center justify-center h-screen flex-col" tabIndex={0} onKeyDown={handleKeyDown}>
+            {loading ? sentence : (
+                <p>
                     <span className="text-green-500">
                         {sentence.slice(0, typed.length)}
                     </span>
