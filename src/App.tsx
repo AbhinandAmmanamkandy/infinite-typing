@@ -16,11 +16,16 @@ const App = () => {
         const value: string = typed + e.key;
         if (sentence.startsWith(value)) {
             setTyped(value);
+            if (value === sentence) {
+                fetchSentence();
+                setTyped("");
+            }
         }
     }
 
     return (
-        <div ref={divRef} className="flex items-center justify-center h-screen flex-col" tabIndex={0} onKeyDown={handleKeyDown}>
+        <div ref={divRef} className="flex items-center justify-center h-screen flex-col" tabIndex={0}
+             onKeyDown={handleKeyDown}>
             {loading ? "Loading..." : sentence}
         </div>
     );
