@@ -7,9 +7,9 @@ export const useSentence = () => {
     const fetchSentence = async () => {
         setLoading(true);
         try {
-            const res = await fetch("https://api.quotable.io/random");
+            const res = await fetch("https://random-word-api.herokuapp.com/word?number=2");
             const data = await res.json();
-            setSentence(data.content);
+            setSentence(data.join(" "));
         } catch (err) {
             console.error(err);
         } finally {
