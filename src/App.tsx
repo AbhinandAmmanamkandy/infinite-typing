@@ -25,8 +25,14 @@ export default function App() {
     }, [sentence]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setTyped(e.currentTarget.value);
-        if (e.currentTarget.value === sentence) {
+        const value: string = e.currentTarget.value;
+        if (
+            value.length <= sentence.length &&
+            (value === "" || value[0] !== " ")
+        ) {
+            setTyped(value);
+        }
+        if (value === sentence) {
             setSentence(getSentence(words));
             setTyped("");
         }
