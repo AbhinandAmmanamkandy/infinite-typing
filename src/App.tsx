@@ -1,30 +1,30 @@
 import {getSentence} from "./utils/wordUtil.ts";
-import {type ChangeEvent, useEffect, useRef, useState} from "react";
+import {type ChangeEvent, type RefObject, useEffect, useRef, useState} from "react";
 
 export default function App() {
     const words = 3;
     const [typed, setTyped] = useState("");
     const [sentence, setSentence] = useState("");
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const inputRef: RefObject<HTMLInputElement | null> = useRef<HTMLInputElement | null>(null);
 
-    const textRef = useRef<HTMLDivElement>(null);
+    const textRef: RefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
 
-    useEffect(() => {
-        const init = () => {
+    useEffect((): void => {
+        const init: () => void = (): void => {
             setSentence(getSentence(words));
             inputRef.current?.focus();
         };
         init();
     }, []);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (textRef.current) {
             setWidth(textRef.current.offsetWidth);
         }
     }, [sentence]);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setTyped(e.currentTarget.value);
         if (e.currentTarget.value === sentence) {
             setSentence(getSentence(words));
@@ -35,7 +35,7 @@ export default function App() {
     return (
         <div className="flex flex-col items-center justify-center h-screen text-4xl whitespace-nowrap">
             <div ref={textRef} className="">
-                {sentence.split("").map((char, index) => {
+                {sentence.split("").map((char: string, index: number) => {
                     let color = "";
                     if (index < typed.length) {
                         if (typed[index] === char) {
