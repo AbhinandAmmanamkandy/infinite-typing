@@ -7,9 +7,6 @@ export default function App() {
     const [sentence, setSentence] = useState("");
     const inputRef: RefObject<HTMLInputElement | null> = useRef<HTMLInputElement | null>(null);
 
-    const textRef: RefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
-    const [width, setWidth] = useState(0);
-
     useEffect((): void => {
         const init: () => void = (): void => {
             setSentence(getSentence(words));
@@ -17,12 +14,6 @@ export default function App() {
         };
         init();
     }, []);
-
-    useEffect((): void => {
-        if (textRef.current) {
-            setWidth(textRef.current.offsetWidth);
-        }
-    }, [sentence]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const value: string = e.currentTarget.value;
@@ -39,15 +30,15 @@ export default function App() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen text-4xl whitespace-nowrap">
-            <div ref={textRef} className="">
+        <div className="flex flex-col items-center justify-center h-screen text-lg sm:text-2xl md:text-3xl lg:text-4xl px-4">
+            <div className="w-full max-w-[90vw] sm:max-w-md text-center wrap-break-word">
                 {sentence.split("").map((char: string, index: number) => {
                     let color = "";
                     if (index < typed.length) {
                         if (typed[index] === char) {
-                            color += "text-green-500";
+                            color = "text-green-500";
                         } else {
-                            color += "text-red-500";
+                            color = "text-red-500";
                         }
                     }
                     return (
@@ -57,8 +48,13 @@ export default function App() {
                     );
                 })}
             </div>
-            <input ref={inputRef} type="text" onChange={handleChange} style={{width}} value={typed}
-                   className="outline-none focus:outline-none border-none focus:border-none"/>
+            <input
+                ref={inputRef}
+                type="text"
+                onChange={handleChange}
+                value={typed}
+                className="w-full max-w-[90vw] sm:max-w-md mt-4 text-center outline-none border-none"
+            />
         </div>
     );
 }
